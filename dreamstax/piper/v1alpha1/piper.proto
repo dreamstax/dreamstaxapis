@@ -189,6 +189,4 @@ message Step {
     string host = 6;
 
     string port = 7;
-
-    string path = 8;
 }

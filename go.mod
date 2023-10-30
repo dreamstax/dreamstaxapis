@@ -1,4 +1,4 @@
-module github.com/dreamstax/kaiapis
+module github.com/dreamstax/dreamstaxapis
 
 go 1.20
 

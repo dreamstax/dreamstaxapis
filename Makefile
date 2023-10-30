@@ -7,5 +7,5 @@ install: download
 	@cat tools.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go install %
 
 gen:
-	$(MAKE) -C kai/piper/v1alpha1 gen-proto
+	$(MAKE) -C dreamstax/piper/v1alpha1 gen-proto
 
