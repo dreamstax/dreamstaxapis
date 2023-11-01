@@ -16,16 +16,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          token: ${{ secrets.REPO_TOKEN }}
           path: dreamstaxapis
 
       - uses: actions/checkout@v4
         with:
           repository: dreamstax/go-genproto
+          token: ${{ secrets.REPO_TOKEN }}
           path: go-genproto
 
       - uses: actions/checkout@v4
         with:
           repository: googleapis/api-common-protos
+          token: ${{ secrets.REPO_TOKEN }}
           path: api-common-protos
 
       - uses: actions/setup-go@v4
@@ -47,4 +50,3 @@ jobs:
         with:
           repository: ${{ env.KAI_GO_GENPROTO_PATH }}
           commit_message: auto-regenerate .pb.go files
-          token: ${{ secrets.REPO_TOKEN }}
