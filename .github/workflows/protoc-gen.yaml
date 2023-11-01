@@ -5,9 +5,9 @@ on:
     branches: [ main ]
 
 env:
-  KAI_PROTO_PATH: ${{ github.GITHUB_WORKSPACE }}/dreamstaxapis
-  KAI_GO_GENPROTO_PATH: ${{ github.GITHUB_WORKSPACE }}/go-genproto
-  API_COMMON_PROTO_PATH: ${{ github.GITHUB_WORKSPACE }}/api-common-protos
+  KAI_PROTO_PATH: ${{ github.WORKSPACE }}/dreamstaxapis
+  KAI_GO_GENPROTO_PATH: ${{ github.WORKSPACE }}/go-genproto
+  API_COMMON_PROTO_PATH: ${{ github.WORKSPACE }}/api-common-protos
 
 jobs:
   gen-protos:
