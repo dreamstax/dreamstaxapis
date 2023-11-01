@@ -42,3 +42,9 @@ jobs:
           make install
           make gen
 
+      - name: push to go-genproto
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          repository: ${{ env.KAI_GO_GENPROTO_PATH }}
+          commit_message: auto-regenerate .pb.go files
+          token: ${{ secrets.REPO_TOKEN }}
