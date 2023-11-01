@@ -10,8 +10,8 @@ env:
   API_COMMON_PROTO_PATH: ${{ github.GITHUB_WORKSPACE }}/api-common-protos
 
 jobs:
-  build:
-    name: gen proto
+  gen-protos:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
