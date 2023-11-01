@@ -1,0 +1,40 @@
+name: proto-gen
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  KAI_PROTO_PATH: ${{ github.GITHUB_WORKSPACE }}/dreamstaxapis
+  KAI_GO_GENPROTO_PATH: ${{ github.GITHUB_WORKSPACE }}/go-genproto
+  API_COMMON_PROTO_PATH: ${{ github.GITHUB_WORKSPACE }}/api-common-protos
+
+jobs:
+  build:
+    name: gen proto
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: dreamstaxapis
+
+      - uses: actions/checkout@v4
+        with:
+          repository: dreamstax/go-genproto
+          path: go-genproto
+
+      - uses: actions/checkout@v4
+        with:
+          repository: googleapis/api-common-protos
+          path: api-common-protos
+
+      - name: setup protoc
+        uses: arduino/setup-protoc@v2
+        with:
+          version: '3.x'
+
+      - name: install build tools
+        run: |
+          cd dreamstaxapis
+          make install
+          make gen
+
