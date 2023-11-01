@@ -34,6 +34,8 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: '1.20.6'
+          cache-dependency-path: |
+            dreamstaxapis/go.sum
 
       - uses: arduino/setup-protoc@v2
         with:
