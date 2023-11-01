@@ -8,6 +8,7 @@ env:
   KAI_PROTO_PATH: ${{ github.WORKSPACE }}/dreamstaxapis
   KAI_GO_GENPROTO_PATH: ${{ github.WORKSPACE }}/go-genproto
   API_COMMON_PROTO_PATH: ${{ github.WORKSPACE }}/api-common-protos
+  GOPATH: /home/runner/go
 
 jobs:
   gen-protos:
@@ -27,7 +28,7 @@ jobs:
           repository: googleapis/api-common-protos
           path: api-common-protos
 
-      - uses: actions/setup-go@v2
+      - uses: actions/setup-go@v4
         with:
           go-version: '1.20.6'
 
