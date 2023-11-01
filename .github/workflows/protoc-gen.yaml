@@ -30,7 +30,7 @@ jobs:
       - name: setup protoc
         uses: arduino/setup-protoc@v2
         with:
-          version: '3.x'
+          version: '24.x'
 
       - name: install build tools
         run: |
