@@ -6,187 +6,188 @@ import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/longrunning/operations.proto";
 
 option go_package = "piper/v1alpha1;piper";
 
-option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
-	info: {
-		title: "Kai piper service";
-		version: "v1alpha1";
-		contact: {
-			name: "Kai API team";
-			url: "kai-docs.dreamstax.io";
-			email: "dev@dreamstax.io";
-		};
-	};
-	external_docs: {
-		url: "https://github.com/dreamstax/kai-piper";
-		description: "Github Repo";
-	}
-	schemes: HTTPS;
-	consumes: "application/json";
-	produces: "application/json";
-    // Generic responses
-    responses: {
-        key: "400"
-        value: {
-            description: "Bad Request"
-            examples: {
-                key: "application/json"
-                value: "{\"code\": 3,\"message\": \"Bad Request\",\"details\": [{\"@type\": \"type.googleapis.com/google.rpc.ErrorInfo\",\"reason\": \"FliteError: Bad request\",\"domain\": \"\",\"metadata\": {}}]}"
-            }
-        }
-    }
-    responses: {
-        key: "500"
-        value: {
-            description: "Unknown Error"
-            examples: {
-                key: "application/json"
-                value: "{\"code\": 2,\"message\": \"Something bad happened\",\"details\": [{\"@type\": \"type.googleapis.com/google.rpc.ErrorInfo\",\"reason\": \"FliteError: Something bad happened\",\"domain\": \"\",\"metadata\": {}}]}"
-            }
-        }
-    }
-};
-
 service Piper {
-    rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse) {
-        option (google.api.http) = {
-            get: "/health"
-        };
+  rpc ListPipelineJobs(ListPipelineJobsRequest)
+      returns (ListPipelineJobsResponse) {
+    option (google.api.http) = {
+      get : "/v1alpha1/pipelineJobs"
+    };
 
-        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            produces: "application/json"
-            consumes: "application/json"
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      produces : "application/json"
 
-            tags: "Health"
-		};
-    }
+      tags : "pipelineJobs"
+    };
+  }
 
-    rpc ListPipelines(ListPipelinesRequest) returns (ListPipelinesResponse) {
-        option (google.api.http) = {
-            get: "/v1alpha1/pipelines"
-        };
+  rpc GetPipleineJob(GetPipelineJobRequest) returns (PipelineJob) {
+    option (google.api.http) = {
+      get : "/v1alpha1/pipelineJobs/{pipeline_job_id}"
+    };
 
-        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            produces: "application/json"
-            consumes: "application/json"
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      produces : "application/json"
 
-            tags: "pipelines"
-		};
-    }
+      tags : "pipelineJobs"
+    };
+  }
 
-    rpc GetPipeline(GetPipelineRequest) returns (Pipeline) {
-        option (google.api.http) = {
-            get: "/v1alpha1/pipelines/{pipeline_id}"
-        };
+  rpc CreatePipelineJob(CreatePipelineJobRequest) returns (PipelineJob) {
+    option (google.api.http) = {
+      post : "/v1alpha1/pipelineJobs"
+      body : "pipeline_job"
+    };
 
-        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            produces: "application/json"
-            consumes: "application/json"
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      produces : "application/json"
+      consumes : "application/json"
 
-            tags: "pipelines"
-		};
-    }
+      tags : "pipelineJobs"
+    };
+  }
 
-    rpc CreatePipeline(CreatePipelineRequest) returns (Pipeline) {
-        option (google.api.http) = {
-            post: "/v1alpha1/pipelines"
-            body: "pipeline"
-        };
+  rpc UpdatePipelineJob(UpdatePipelineJobRequest) returns (PipelineJob) {
+    option (google.api.http) = {
+      patch : "/v1alpha1/pipelineJobs/{pipeline_job_id}"
+    };
 
-        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            produces: "application/json"
-            consumes: "application/json"
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      produces : "application/json"
+      consumes : "application/json"
 
-            tags: "pipelines"
-		};
-    }
+      tags : "pipelineJobs"
+    };
+  }
 
-    rpc UpdatePipeline(UpdatePipelineRequest) returns (Pipeline) {
-        option (google.api.http) = {
-            patch: "/v1alpha1/pipelines/{pipeline_id}"
-        };
+  rpc DeletePipelineJob(DeletePipelineJobRequest)
+      returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete : "/v1alpha1/pipelineJobs/{pipeline_job_id}"
+    };
 
-        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            produces: "application/json"
-            consumes: "application/json"
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      consumes : "application/json"
 
-            tags: "pipelines"
-		};
-    }
+      tags : "pipelineJobs"
+    };
+  }
 
-    rpc DeletePipeline(DeletePipelineRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/v1alpha1/pipelines/{pipeline_id}"
-        };
+  rpc RunPipelineJob(RunPipelineJobRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post : "/v1alpha1/pipelineJobs/{pipeline_job_id}:run"
+      body : "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      produces : "application/json"
+      consumes : "application/json"
 
-        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            produces: "application/json"
-            consumes: "application/json"
+      tags : "pipelineJobs"
+    };
+  }
 
-            tags: "pipelines"
-		};
-    }
+  rpc ListPipelineJobExecutions(ListPipelineJobExecutionsRequest)
+      returns (ListPipelineJobExecutionsResponse) {
+    option (google.api.http) = {
+      get : "/v1alpha1/pipelineJobs/{pipeline_job_id}/executions"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      produces : "application/json"
+
+      tags : "pipelineJobs"
+    };
+  }
+
+  rpc GetPipelineJobExecution(GetPipelineJobExecutionRequest)
+      returns (PipelineJobExecution) {
+    option (google.api.http) = {
+      get : "/v1alpha1/pipelineJobs/{pipeline_job_id}/executions/{execution_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      produces : "application/json"
+
+      tags : "pipelineJobs"
+    };
+  }
+
+  rpc DeletePipelineJobExecution(DeletePipelineJobExecutionRequest)
+      returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete : "/v1alpha1/pipelineJobs/{pipeline_job_id}/executions/"
+               "{execution_id}"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      consumes : "application/json"
+
+      tags : "pipelineJobs"
+    };
+  }
 }
 
-message HealthCheckRequest {}
+message PipelineJob {
+  string name = 1;
 
-message HealthCheckResponse {
-    string status = 1;
+  string display_name = 2;
+
+  string description = 3;
 }
 
-message ListPipelinesRequest {}
+message PipelineJobExecution {
+  string name = 1;
 
-message ListPipelinesResponse {
-    repeated Pipeline pipelines = 1;
+  google.protobuf.Timestamp createTime = 2;
+
+  google.protobuf.Timestamp startTime = 3;
+
+  google.protobuf.Timestamp endTime = 4;
+
+  google.protobuf.Timestamp updateTime = 5;
 }
 
-message GetPipelineRequest {
-    string pipeline_id = 1;
+message ListPipelineJobsRequest {}
+
+message ListPipelineJobsResponse { repeated PipelineJob pipelineJobs = 1; }
+
+message GetPipelineJobRequest { string pipeline_job_id = 1; }
+
+message CreatePipelineJobRequest { PipelineJob pipeline_job = 2; }
+
+message UpdatePipelineJobRequest {
+  PipelineJob pipeline_job = 1;
+
+  string pipeline_job_id = 2;
+
+  google.protobuf.FieldMask field_mask = 3;
 }
 
-message CreatePipelineRequest {
-    Pipeline pipeline = 2;
+message DeletePipelineJobRequest { string pipeline_job_id = 1; }
+
+message RunPipelineJobRequest { string pipeline_job_id = 1; }
+
+message ListPipelineJobExecutionsRequest { string pipeline_job_id = 1; }
+
+message ListPipelineJobExecutionsResponse {}
+
+message GetPipelineJobExecutionRequest {
+  string pipeline_job_id = 1;
+
+  string execution_id = 2;
 }
 
-message UpdatePipelineRequest {
-    Pipeline pipeline = 1;
+message GetPipelineJobExecutionResponse {}
 
-    string pipeline_id = 2;
+message DeletePipelineJobExecutionRequest {
+  string pipeline_job_id = 1;
 
-    google.protobuf.FieldMask field_mask = 3;
+  string execution_id = 2;
 }
 
-message DeletePipelineRequest {
-    string pipeline_id = 1;
-}
-
-message Pipeline {
-    string name = 1;
-
-    string display_name = 2;
-
-    string description = 3;
-}
-
-enum StepType {
-    STEP_UNKNOWN = 0;
-    STEP_HTTP = 1;
-}
-
-message Step {
-    string name = 1;
-
-    string display_name = 2;
-
-    string description = 3;
-
-    StepType type = 4;
-
-    string http_method = 5;
-
-    string host = 6;
-
-    string port = 7;
-}
+message DeletePipelineJobExecutionResponse {}
